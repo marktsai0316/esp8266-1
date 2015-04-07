@@ -18,7 +18,7 @@ _G["wifiStatue"] = "..."
 
 _G["config"]  = {}
 
-local userScriptFile = ""
+local userScriptFile = "" --預設User Script File 
 
 
 function M.doMyFile(fName)
@@ -36,7 +36,7 @@ M.addVar("password")
 if( file.open("network_user_cfg.lua") ~= nil) then
      ssid=""
      password=""
-     require("network_user_cfg")
+     require("network_user_cfg") --取得AP Router Config設定值 
           --print("set up wifi mode")
           wifi.setmode(wifi.STATION)
           --please config ssid and password according to settings of your wireless router.
@@ -45,10 +45,10 @@ if( file.open("network_user_cfg.lua") ~= nil) then
           cnt = 0
           tmr.alarm(1, 1000, 1, function()
                if (wifi.sta.getip() == nil) and (cnt < 10) then
-                    --print(".")
+                    --print(".") --未連線 
                     cnt = cnt + 1
                else
-                    tmr.stop(1)
+                    tmr.stop(1) --已連線
                     if (cnt < 10) then print("IP:"..wifi.sta.getip())
                          --_G["wifiStatue"] = "OK"
                          if(userScriptFile ~="") then 
@@ -64,7 +64,7 @@ if( file.open("network_user_cfg.lua") ~= nil) then
                               _G["EasyWebConfig"]=nil
                               package.loaded["network_user_cfg"]=nil
                               package.loaded["EasyWebConfig"]=nil
-                              dofile(userScriptFile) 
+                              dofile(userScriptFile) --執行預設User Script File
                          end
                     else print("FailToConnect,LoadDefault")
                          wifi.sta.disconnect()
@@ -75,6 +75,6 @@ if( file.open("network_user_cfg.lua") ~= nil) then
                end
           end)
 else
-     require("network_default_cfg")
+     require("network_default_cfg") --執行SoftAP Mode, 進行SSID/PWD設定 
      print ("LoadDefault")
 end
