@@ -1,5 +1,5 @@
 ssid="ESP8266_".. node.chipid()
-password="12345678"
+password="12345678" --這是ESP8266 SoftAP的預設SSID和PWD  
 
 function decodeURI(s)
     s = string.gsub(s, '%%(%x%x)', function(h) return string.char(tonumber(h, 16)) end)
@@ -40,6 +40,7 @@ srv:listen(80,function(conn)
           
 
           --there should be a "=" in Post data,such as ssid=id&password=ps
+          --這邊是取得ESP8266 Station要連接的AP SSID and PWD,解碼儲存於network_user_cfg.lua 
           if (string.find(paraStr,"=")~=nil) then
                file.open("network_user_cfg.lua","w+")
                for name, value in string.gfind(paraStr, "([^&=]+)=([^&=]+)") do
@@ -94,7 +95,7 @@ srv:listen(80,function(conn)
 	        conn:close()
           if(_G["wifiStatue"]=="Saved") then
                print("reboot")
-               tmr.alarm(0,3000,0,function()node.restart() end )
+               tmr.alarm(0,3000,0,function()node.restart() end ) --執行restart
           end
      end)
      
