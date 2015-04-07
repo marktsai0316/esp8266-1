@@ -95,7 +95,7 @@ srv:listen(80,function(conn)
 	        conn:close()
           if(_G["wifiStatue"]=="Saved") then
                print("reboot")
-               tmr.alarm(0,3000,0,function()node.restart() end ) --執行restart
+               tmr.alarm(0,3000,0,function()node.restart() end ) --3秒後執行restart
           end
      end)
      
